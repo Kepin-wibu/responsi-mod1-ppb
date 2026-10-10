@@ -1,0 +1,256 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Library Loan REST API",
+    "description": "Koleksi Postman untuk pengujian REST API Layanan Pencatatan Peminjaman Buku Perpustakaan",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "sampleMemberId",
+      "value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "type": "string"
+    },
+    {
+      "key": "sampleBookId",
+      "value": "11111111-1111-1111-1111-111111111111",
+      "type": "string"
+    },
+    {
+      "key": "sampleLoanId",
+      "value": "f1111111-1111-1111-1111-111111111111",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Server Status",
+      "item": [
+        {
+          "name": "GET Root Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "GET Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Peminjaman Buku (Loans)",
+      "item": [
+        {
+          "name": "GET All Loans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loans",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans"]
+            }
+          }
+        },
+        {
+          "name": "GET Loans - Filter Status Terlambat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loans?status=Terlambat",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Terlambat"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Loans - Filter Status Dipinjam",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loans?status=Dipinjam",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Dipinjam"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Loan Detail By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loans/{{sampleLoanId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans", "{{sampleLoanId}}"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Loan (Peminjaman Baru)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"member_id\": \"{{sampleMemberId}}\",\n  \"book_id\": \"{{sampleBookId}}\",\n  \"due_date\": \"2026-10-25\",\n  \"notes\": \"Peminjaman untuk bahan riset\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/loans",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Loan / Process Return (Pengembalian Buku)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Dikembalikan\",\n  \"notes\": \"Buku sudah dikembalikan dalam kondisi bersih\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/loans/{{sampleLoanId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans", "{{sampleLoanId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Loan",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loans/{{sampleLoanId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "loans", "{{sampleLoanId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Anggota Perpustakaan (Members)",
+      "item": [
+        {
+          "name": "GET All Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/members",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "members"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rian Pratama\",\n  \"email\": \"rian@example.com\",\n  \"phone\": \"081299887766\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/members",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "members"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Katalog Buku (Books)",
+      "item": [
+        {
+          "name": "GET All Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/books",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Refactoring: Improving the Design of Existing Code\",\n  \"author\": \"Martin Fowler\",\n  \"isbn\": \"978-0201485677\",\n  \"stock\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/books",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
